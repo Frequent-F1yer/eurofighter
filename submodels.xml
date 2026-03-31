@@ -67,7 +67,7 @@ Muzzle velocity: 1025 m/s
 		<no-roll>true</no-roll>
 	</submodel>
 	<BK27>
-		<name>BK27 round</name>
+		<name>BK27</name>
 		<model>Aircraft/eurofighter/Stores/BK27Gun/apibullet-tracer.xml</model>
 		<trigger>/controls/armament/gun-trigger</trigger>
 		<speed>3363</speed>
@@ -93,7 +93,7 @@ Muzzle velocity: 1025 m/s
 		<submodel-path>Aircraft/eurofighter/Stores/BK27Gun/BK27-submodels.xml</submodel-path>
 	</BK27>
 	<submodel>
-		<name>BK27 round 1</name>
+		<name>BK27</name>  <!-- this name must be in sync with shell type in damage.nas -->
 		<model alias ="../../BK27/model"/>
 		<trigger alias="../../BK27/trigger"/>
 		<delay alias="../../BK27/delay"/>

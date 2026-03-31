@@ -3,7 +3,7 @@
 var Loading_missile = func(name) {
 var address           = "test";
     var NoSmoke           = "test2";
-    var Explosion         = "/Aircraft/Mirage-2000/Missiles/MatraMica/explosion.xml";
+    var Explosion         = "/Aircraft/eurofighter/Stores/MatraMica/explosion.xml";
     var maxdetectionrngnm = 0;
     var fovdeg            = 0;
     var detectionfovdeg   = 0;
@@ -29,6 +29,7 @@ var address           = "test";
     var railLength        = 2.667;
     var railForward       = 1;
 	var weightwarheadlbs  = 10;
+    var typeID = 57;  # let us assume AIM-9L as default
 
 	if(name =="Matra MICA"){
 		#MICA max range 80 km for actual version. ->43 nm.. at mach 4 it's about 59 sec. I put a life of 120, and thurst duration to 3/4 the travel time, and have vectorial thurst (So 27 G more than a similar missile wich have not vectorial thrust)
@@ -59,6 +60,7 @@ var address           = "test";
         fox = "Fox 3";
         rail = "true";
         cruisealt = 0;
+	typeID = 72; # Matra MICA as from payload.xml of Mirage-2000
 
 	}elsif(name =="AIM120"){
 		#AIM 120 max range 72 km for actual version. ->39 nm.. at mach 4 it's about 53 sec. I put a life of 115, and thurst duration oo 3/4 the travel time.
@@ -87,6 +89,7 @@ var address           = "test";
         thrust2durationsec = 15;
         dragcoeff = 0.50;
         dragarea = 0.2739;
+	typeID = 52; # AIM-120
 
 	}elsif(name =="AIM9"){
 		#aim-9 max range 18 km for actual version. ->9 nm.. at mach 2.5 it's about 21 sec. I put a life of 40, and thurst duration to 3/4 the travel time.
@@ -116,6 +119,7 @@ var address           = "test";
         dragcoeff = 0.50;
         dragarea = 0.143;
         guidance = "heat";
+	typeID = 57; # AIM-9L 
 
 	}elsif(name =="AIM132"){
 		#aim-132 max range 28 km for actual version. ->
@@ -146,10 +150,11 @@ var address           = "test";
 		seeker_angular_speed_dps = 30;   # you want this (much) higher for your modern missiles
 		arming_time_sec          = 1.2;  
 		guidance          = "heat";
+		typeID = 57; # AIM-9L
 
 	}elsif(name =="GBU16"){
-        address = "/Aircraft/Mirage-2000/Missiles/GBU16/gbu16.xml";
-        NoSmoke = "/Aircraft/Mirage-2000/Missiles/GBU16/gbu16.xml";
+        address = "/Aircraft/eurofighter/Stores/GBU16/gbu16.xml";
+        NoSmoke = "/Aircraft/eurofighter/Stores/GBU16/gbu16.xml";
         maxdetectionrngnm = 14;                       # Not real Impact yet
         fovdeg = 25;                                  # seeker optical FOV
         detectionfovdeg = 180;                        # Search pattern diameter (rosette scan)
@@ -169,6 +174,7 @@ var address           = "test";
         fox = "A/G";
         rail = "false";
         cruisealt = 0;
+	typeID = 33; # GBU-16 Paveway II is a modified Mk 83
 	}elsif(name =="ALARM"){
 		#leaving as is for now
 		address="Aircraft/eurofighter/Stores/ALARM/alarm-smoke.xml";
@@ -197,6 +203,7 @@ var address           = "test";
 		guidance          = "radar";
 		railLength        = 2.667;
 		railForward       = 1;
+		typeID = 2; # AGM-88
 
 	}elsif(name =="STORMSHADOW"){
 		#leaving as-is for now
@@ -224,6 +231,7 @@ var address           = "test";
         cruisealt = 300;
         min_guiding_speed_mach = 0.25;
         seeker_angular_speed_dps = 45;
+	typeID = 45; # Scalp
 	}
 
 	#print(address);
@@ -256,4 +264,5 @@ var address           = "test";
 	setprop("controls/armament/missile/guidance",guidance);
 	setprop("controls/armament/missile/rail-length-m",railLength);
 	setprop("controls/armament/missile/railForward",railForward);
+	setprop("controls/armament/missile/type-id",typeID);
 }

@@ -98,6 +98,10 @@ var MISSILE = {
         m.guidance          = getprop("controls/armament/missile/guidance");
 
         m.class = m.fox;
+
+        # armament type ID for Emesary-based damage system (typically defined in payload.xml,
+        # but we must set it in Loading_Missiles.nas for Typhoon)
+        m.typeID            = getprop("controls/armament/missile/type-id");
         
         # Find the next index for "models/model" and create property node.
         # Find the next index for "ai/models/missile" and create property node.
@@ -1186,6 +1190,27 @@ var MISSILE = {
         }
     },
     
+    # send a hit notification via Emesary
+    # (taken over from missile-code.nas as of OPRF version 1.2.1)
+    notifyHit: func (RelativeAltitude, Distance, callsign, Bearing, reason, typeID, type, self) {
+		var msg = notifications.ArmamentNotification.new("mhit", 4, damage.DamageRecipient.typeID2emesaryID(typeID));
+        msg.RelativeAltitude = RelativeAltitude;
+        msg.Bearing = Bearing;
+        msg.Distance = Distance;
+        msg.RemoteCallsign = callsign; # RJHTODO: maybe handle flares / chaff
+        if (self) {
+        	msg.Callsign = callsign;
+        	msg.FromIncomingBridge = 1;
+        	damage.damage_recipient.Receive(msg);
+        }
+        notifications.hitBridgedTransmitter.NotifyAll(msg);
+        var str = sprintf("You hit %s with %s at %.1f meters.",callsign, type, Distance);
+        print(str);
+        # display the message to the user
+        # (currently not required as MP attack messages are anyway duplicated on ATC)
+        # setprop("/sim/messages/atc", str);
+	},
+    
     poximity_detection: func()
     {
         var cur_dir_dist_m = me.coord.direct_distance_to(me.t_coord);
@@ -1259,8 +1284,19 @@ var MISSILE = {
                     #var phrase = me.Tgt.get_Callsign() ~ " has been hit by " ~ me.NameOfMissile ~ ". Distance of impact " ~ sprintf( "%01.0f", me.direct_dist_m) ~ " meters";
 
                     var phrase = sprintf( me.NameOfMissile~" exploded: %01.1f", me.direct_dist_m) ~ " meters from: " ~ me.Tgt.get_Callsign();
-                    print(phrase~"  Reason: Passed target");
+                    var reason = "Passed target";
+                    print(phrase ~ "  Reason: " ~ reason);
                     me.sendMessage(phrase);
+                    
+					# send a hit notification over an Emesary bridge    
+                    MISSILE.notifyHit(t_delta_alt_m,                            # relative altitude
+                                      me.direct_dist_m,                         # distance 
+                                      me.Tgt.get_Callsign(),                    # callsign
+                                      t_bearing_deg,                            # bearing
+                                      reason,                                   # reason
+                                      me.typeID,                                # typeID
+                                      me.NameOfMissile,                         # type
+                                      0);                                       # self
 
                     me.animate_explosion();
                     me.Tgt = nil;

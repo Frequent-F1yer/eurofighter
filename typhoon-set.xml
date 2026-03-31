@@ -13,7 +13,7 @@ By MaverickAlex, D. Faber, AlMurSi & Algernon
         <description>EFA (Eurofighter) Typhoon</description>
         <author>Herbert Wagner, Maverick Alex and others</author>
         <status>Special Edition</status>
-        <aircraft-version>2.0</aircraft-version>
+        <aircraft-version>2.1</aircraft-version>
         <minimum-flightgear-version>2018.3.2</minimum-flightgear-version>
         <flight-model>yasim</flight-model>
         <aero>typhoon-yasim</aero>
@@ -96,7 +96,10 @@ By MaverickAlex, D. Faber, AlMurSi & Algernon
     </sim>
     
     <systems include="typhoon-systems.xml" />
-    
+ 	
+    <!-- payload configurations (used in particular by damage.nas -->
+	<payload include="Systems/payload.xml"/>
+       
     <identification>
         <aircraft-number type="string" archive="y">XP-210</aircraft-number>
         <pilot-name type="string" archive="y"></pilot-name>
@@ -292,6 +295,10 @@ By MaverickAlex, D. Faber, AlMurSi & Algernon
         <environment>
             <file>Aircraft/eurofighter/Nasal/environment.nas</file>
         </environment>
+        <notifications>
+            <file>Aircraft/eurofighter/Nasal/ArmamentNotification.nas</file>
+            <file>Aircraft/eurofighter/Nasal/GeoBridgedTransmitter.nas</file>
+        </notifications>
         <guns>
             <file>Aircraft/eurofighter/Nasal/weapons.nas</file>
         </guns>
